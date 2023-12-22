@@ -13,6 +13,8 @@ extern crate alloc;
 
 use alloc::{borrow::Cow, boxed::Box, string::String, sync::Arc};
 use core::fmt::{self, Arguments, Display, Write};
+#[cfg(feature = "serde")]
+use serde::Serialize;
 
 pub use maud_macros::html;
 
@@ -221,6 +223,7 @@ pub fn display(value: impl Display) -> impl Render {
 
 /// A wrapper that renders the inner value without escaping.
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct PreEscaped<T>(pub T);
 
 impl<T: AsRef<str>> Render for PreEscaped<T> {
